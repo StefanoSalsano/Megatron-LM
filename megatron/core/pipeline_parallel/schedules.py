@@ -391,6 +391,7 @@ def forward_backward_no_pipelining(
     input_tensor, output_tensor_grad = None, None
     total_num_tokens = torch.zeros([], dtype=torch.int, device="cuda")
     with no_sync_func():
+        print ("num_microbatches",num_microbatches)
         for i in range(num_microbatches - 1):
             output_tensor, num_tokens = forward_step(
                 forward_step_func,
@@ -438,6 +439,8 @@ def forward_backward_no_pipelining(
 
     if config.timers is not None:
         config.timers('forward-backward').stop()
+
+    print("forward_backward_no_pipelining BEFORE RETURN")
 
     return forward_data_store
 
