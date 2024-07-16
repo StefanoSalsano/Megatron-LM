@@ -162,7 +162,7 @@ def forward_step(data_iterator, model: GPTModel):
     args = get_args()
     timers = get_timers()
 
-    print("HI I AM IN FORWARD_STEP")
+    #print("HI I AM IN FORWARD_STEP")
     # Get the batch.
     timers('batch-generator', log_level=2).start()
     global stimer

@@ -393,6 +393,7 @@ def forward_backward_no_pipelining(
     with no_sync_func():
         print ("num_microbatches",num_microbatches)
         for i in range(num_microbatches - 1):
+            print ("i = ", i)
             output_tensor, num_tokens = forward_step(
                 forward_step_func,
                 data_iterator,
