@@ -561,8 +561,11 @@ class IndexedDataset(torch.utils.data.Dataset):
 
             s3_config (Optional[S3Config]): See IndexedDataset docstring for details.
         """
+        print("path_prefix",path_prefix)
         idx_path = get_idx_path(path_prefix)
         bin_path = get_bin_path(path_prefix)
+        print("idx_path",idx_path)
+        print("bin_path",bin_path)
         if s3_config is None:
             assert os.path.exists(idx_path) and os.path.exists(
                 bin_path
