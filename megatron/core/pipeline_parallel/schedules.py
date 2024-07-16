@@ -1,6 +1,9 @@
 # Copyright (c) 2022, NVIDIA CORPORATION. All rights reserved.
 
 import contextlib
+
+from sys import stdout
+
 from typing import Callable, Iterator, List, Optional, Union
 
 import torch
@@ -393,7 +396,9 @@ def forward_backward_no_pipelining(
     with no_sync_func():
         print ("num_microbatches",num_microbatches)
         for i in range(num_microbatches - 1):
-            print ("i = ", i)
+            #print ("i = ", i)
+            stdout.write("\ri = %d" % i)
+            stdout.flush()
             output_tensor, num_tokens = forward_step(
                 forward_step_func,
                 data_iterator,
