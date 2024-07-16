@@ -583,7 +583,7 @@ def train_step(forward_step_func, data_iterator,
                model, optimizer, opt_param_scheduler, config):
     """Single training step."""
 
-    print("Single training step.")
+    print("train_step Single training step.")
     args = get_args()
     timers = get_timers()
 
@@ -603,7 +603,8 @@ def train_step(forward_step_func, data_iterator,
         micro_batch_size=args.micro_batch_size,
         decoder_seq_length=args.decoder_seq_length,
         forward_only=False)
-
+    print("train_step BEFORE Empty unused memory")
+    
     # Empty unused memory.
     if args.empty_unused_memory_level >= 1:
         torch.cuda.empty_cache()
