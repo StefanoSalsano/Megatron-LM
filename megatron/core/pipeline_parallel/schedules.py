@@ -367,7 +367,7 @@ def forward_backward_no_pipelining(
 
     See get_forward_backward_func() for argument details
     """
-
+    print("forward_backward_no_pipelining")
     if isinstance(model, list):
         assert len(model) == 1, "non-pipeline-parallel schedule does not support model chunking"
         model = model[0]
