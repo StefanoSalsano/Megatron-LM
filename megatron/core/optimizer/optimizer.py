@@ -447,7 +447,7 @@ class MixedPrecisionOptimizer(MegatronOptimizer):
         num_zeros_in_grad = self.count_zeros() if self.config.log_num_zeros_in_grad else None
         if timers is not None:
             timers('optimizer-count-zeros').stop()
-        print("optimizer.py -> step calliing step_with_ready_grads"
+        print("optimizer.py -> step calliing step_with_ready_grads")
         success = self.step_with_ready_grads()    # stack trace 4
 
         # Successful update.
