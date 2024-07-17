@@ -1066,6 +1066,11 @@ def train(forward_step_func, model, optimizer, opt_param_scheduler,
             one_logger.store_set('get_e2e_base_metrics', get_e2e_base_metrics)
 
     print("args.train_iters : ",args.train_iters)
+
+
+
+    my_start_time = time.time()  # Capture the start time
+
     while iteration < args.train_iters:
         if args.profile and \
            iteration == args.profile_step_start and \
@@ -1099,7 +1104,14 @@ def train(forward_step_func, model, optimizer, opt_param_scheduler,
                        optimizer,
                        opt_param_scheduler,
                        config)
+
         iteration += 1
+        my_current_time = time.time()  # Capture the current time
+        my_elapsed_time = my_current_time - my_start_time
+        print("my_elapsed_time : ",my_elapsed_time," AVERAGE : ",my_elapsed_time/iteration,
+                "remaining iterations : ", args.train_iters - iteration)
+        print ("estimated remaining time : ",(args.train_iters - iteration)* my_elapsed_time/iteration   )
+
         batch_size = mpu.get_data_parallel_world_size() * \
                      args.micro_batch_size * \
                      get_num_microbatches()
