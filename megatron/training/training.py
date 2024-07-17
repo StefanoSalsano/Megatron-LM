@@ -642,6 +642,7 @@ def train_step(forward_step_func, data_iterator,
 
     # Update parameters.
     timers('optimizer', log_level=1).start(barrier=args.barrier_with_L1_time)
+    print("train_step calling optimizer.step")
     update_successful, grad_norm, num_zeros_in_grad = optimizer.step()   # stack trace 2
     timers('optimizer').stop()
 
