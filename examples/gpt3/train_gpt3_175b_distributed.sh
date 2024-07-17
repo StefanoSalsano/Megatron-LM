@@ -29,7 +29,8 @@ GPT_MODEL_ARGS=(
 #    --num-layers 96 
     --num-layers 24
 #    --hidden-size 12288
-    --hidden-size 3072 
+#    --hidden-size 3072 
+    --hidden-size 1536 
     --num-attention-heads 96 
     --seq-length 2048 
     --max-position-embeddings 2048 
