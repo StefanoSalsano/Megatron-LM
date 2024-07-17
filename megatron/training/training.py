@@ -63,6 +63,32 @@ from . import one_logger_utils
 
 stimer = StragglerDetector()
 
+def get_gpu_memory_info(device=0):
+    """
+    Get the free and total memory of the specified GPU.
+
+    Parameters:
+        device (int): GPU device index.
+
+    Returns:
+        dict: Dictionary containing free, total, and used memory in bytes.
+    """
+    # Ensure the device index is valid
+    if device >= torch.cuda.device_count():
+        raise ValueError(f"Invalid device index {device}. Only {torch.cuda.device_count()} GPUs available.")
+
+    # Get the free and total memory
+    free_mem, total_mem = torch.cuda.mem_get_info(device)
+
+    # Calculate used memory
+    used_mem = total_mem - free_mem
+
+    return {
+        'free_mem': free_mem,
+        'total_mem': total_mem,
+        'used_mem': used_mem
+    }
+
 def print_datetime(string):
     """Note that this call will sync across all ranks."""
     torch.distributed.barrier()
@@ -1097,6 +1123,16 @@ def train(forward_step_func, model, optimizer, opt_param_scheduler,
 
         args.curr_iteration = iteration
         print ("iteration",iteration)
+        mem_info = get_gpu_memory_info(0)
+        #print(f"GPU {device} Memory Info:")
+        mem_free = mem_info['free_mem'] / (1024 ** 2)
+        mem_tot = mem_info['total_mem'] / (1024 ** 2)
+        mem_used = mem_info['used_mem'] / (1024 ** 2)
+        print(f"Free mem: {mem_free:.2f} MB, Tot mem: {mem_tot:.2f} MB, Used mem: {mem_used:.2f} MB")
+        #print(f"Tot mem: {mem_tot:.2f} MB")
+        #print(f"Used mem: {mem_used:.2f} MB")
+
+
         loss_dict, skipped_iter, grad_norm, num_zeros_in_grad = \
             train_step(forward_step_func,
                        train_data_iterator,
@@ -1110,7 +1146,14 @@ def train(forward_step_func, model, optimizer, opt_param_scheduler,
         my_elapsed_time = my_current_time - my_start_time
         print("my_elapsed_time : ",my_elapsed_time," AVERAGE : ",my_elapsed_time/iteration,
                 "remaining iterations : ", args.train_iters - iteration)
-        print ("estimated remaining time : ",(args.train_iters - iteration)* my_elapsed_time/iteration   )
+        print ("estimated remaining time : ",(args.train_iters - iteration)* my_elapsed_time/iteration)
+
+        mem_info = get_gpu_memory_info(0)
+        #print(f"GPU {device} Memory Info:")
+        mem_free = mem_info['free_mem'] / (1024 ** 2)
+        mem_tot = mem_info['total_mem'] / (1024 ** 2)
+        mem_used = mem_info['used_mem'] / (1024 ** 2)
+        print(f"Free mem: {mem_free:.2f} MB, Tot mem: {mem_tot:.2f} MB, Used mem: {mem_used:.2f} MB")
 
         batch_size = mpu.get_data_parallel_world_size() * \
                      args.micro_batch_size * \
