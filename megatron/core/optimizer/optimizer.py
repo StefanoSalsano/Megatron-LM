@@ -403,7 +403,8 @@ class MixedPrecisionOptimizer(MegatronOptimizer):
             timers('optimizer-inner-step', log_level=1).start(
                 barrier=self.config.barrier_with_L1_time
             )
-        self.optimizer.step()
+        print ("step_with_ready_grads before self.optimizer.step")
+        self.optimizer.step()    #stack trace 6
         if timers is not None:
             timers('optimizer-inner-step').stop()
 
@@ -446,7 +447,7 @@ class MixedPrecisionOptimizer(MegatronOptimizer):
         if timers is not None:
             timers('optimizer-count-zeros').stop()
 
-        success = self.step_with_ready_grads()
+        success = self.step_with_ready_grads()    # stack trace 4
 
         # Successful update.
         return success, grad_norm, num_zeros_in_grad
