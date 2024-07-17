@@ -370,7 +370,7 @@ def forward_backward_no_pipelining(
 
     See get_forward_backward_func() for argument details
     """
-    print("forward_backward_no_pipelining")
+    #print("forward_backward_no_pipelining")
     if isinstance(model, list):
         assert len(model) == 1, "non-pipeline-parallel schedule does not support model chunking"
         model = model[0]
@@ -397,7 +397,7 @@ def forward_backward_no_pipelining(
         print ("num_microbatches",num_microbatches)
         for i in range(num_microbatches - 1):
             #print ("i = ", i)
-            stdout.write("\ri = %d" % i)
+            stdout.write("\r forward_backward_no_pipelining i = %d" % i)
             stdout.flush()
             output_tensor, num_tokens = forward_step(
                 forward_step_func,
@@ -414,7 +414,8 @@ def forward_backward_no_pipelining(
             total_num_tokens += num_tokens.item()
             if not forward_only:
                 backward_step(input_tensor, output_tensor, output_tensor_grad, model_type, config)
-
+        stdout.write("\n")
+        
     # Run computation for last microbatch out of context handler (want to
     # synchronize gradients).
     output_tensor, num_tokens = forward_step(
@@ -446,7 +447,7 @@ def forward_backward_no_pipelining(
     if config.timers is not None:
         config.timers('forward-backward').stop()
 
-    print("forward_backward_no_pipelining BEFORE RETURN")
+    #print("forward_backward_no_pipelining BEFORE RETURN")
 
     return forward_data_store
 

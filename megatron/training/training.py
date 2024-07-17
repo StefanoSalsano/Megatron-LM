@@ -603,7 +603,7 @@ def train_step(forward_step_func, data_iterator,
         micro_batch_size=args.micro_batch_size,
         decoder_seq_length=args.decoder_seq_length,
         forward_only=False)
-    print("train_step BEFORE Empty unused memory")
+    #print("train_step BEFORE Empty unused memory")
     
     # Empty unused memory.
     if args.empty_unused_memory_level >= 1:
@@ -1065,6 +1065,7 @@ def train(forward_step_func, model, optimizer, opt_param_scheduler,
         with one_logger.get_context_manager():
             one_logger.store_set('get_e2e_base_metrics', get_e2e_base_metrics)
 
+    print("args.train_iters : ",args.train_iters)
     while iteration < args.train_iters:
         if args.profile and \
            iteration == args.profile_step_start and \
