@@ -1,4 +1,4 @@
-PYTORCH_IMAGE=nvcr.io/nvidia/pytorch:24.06-py3
+#PYTORCH_IMAGE=nvcr.io/nvidia/pytorch:24.06-py3
 CHECKPOINT_PATH="/workspace/checkpoint" #<Specify path>
 TENSORBOARD_LOGS_PATH="/home/mpi/megatron/tensorboard_logs" #<Specify path>
 VOCAB_FILE="/workspace/data/gpt2-vocab.json" #<Specify path to file>/gpt2-vocab.json
